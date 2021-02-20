@@ -1,41 +1,25 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 project(neo_msgs)
 
 ## By default build with code optimization and no debug info
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "Release"
-  	  CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel."
-      FORCE)
-endif(NOT CMAKE_BUILD_TYPE)
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
 
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  std_msgs
-  message_generation
+find_package(rosidl_default_generators REQUIRED)
+
+rosidl_generate_interfaces(rosidl_generate_interfaces
+  "msg/EmergencyStopState.msg"
+  "msg/Keypad.msg"
+  "msg/LCDOutput.msg"
+  "msg/USBoard.msg"
+  "msg/USBoardV2.msg"
+  "msg/IOBoard.msg"
 )
 
- ##Generate messages in the 'msg' folder
- add_message_files(
-   FILES
-    	EmergencyStopState.msg
-	Keypad.msg
-	LCDOutput.msg
-	USBoard.msg
-  USBoardV2.msg
-	RelayBoardV2.msg
-	IOBoard.msg
- )
-
-
- generate_messages(
-   DEPENDENCIES
-   std_msgs
- )
-
-catkin_package(
-  CATKIN_DEPENDS message_runtime
-)
+ament_package()
 
 
